@@ -1,5 +1,7 @@
 import { Pool } from 'pg';
 import { drizzle } from 'drizzle-orm/node-postgres';
+import { AsyncLocalStorage } from 'node:async_hooks';
+import type { PostgresJsDatabase } from 'drizzle-orm/postgres-js';
 
 import * as schema from './schema';
 
@@ -9,6 +11,10 @@ export const pool = new Pool({
 });
 
 export const db = drizzle(pool, { schema, casing: 'snake_case' });
+
+export const DatabaseContext = new AsyncLocalStorage<
+  PostgresJsDatabase<typeof schema>
+>();
 
 export function database() {
   if (!db) {

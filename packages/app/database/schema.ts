@@ -135,6 +135,26 @@ export const orders = pgTable('orders', {
   deletedAt: timestamp('deleted_at', { withTimezone: true }).default(sql`NULL`),
 });
 
+// Deal structure
+export const dealStructure = pgTable('deal_structure', {
+  id: uuid('id').defaultRandom().primaryKey().notNull(),
+  createdAt: timestamp('created_at', { withTimezone: true })
+    .defaultNow()
+    .notNull(),
+  updatedAt: timestamp('updated_at', { withTimezone: true }).default(sql`NULL`),
+  deletedAt: timestamp('deleted_at', { withTimezone: true }).default(sql`NULL`),
+  orderId: uuid('order_id')
+    .references(() => orders.id)
+    .default(sql`NULL`),
+  contractStartDate: timestamp('contract_start_date', { withTimezone: true })
+    .defaultNow()
+    .notNull(),
+  contractEndDate: timestamp('contract_end_date', {
+    withTimezone: true,
+  }).default(sql`NULL`),
+  contractMonthsPeriod: integer('contract_months_period').default(12),
+});
+
 // Order add-ons
 export const orderAddOns = pgTable('order_add_ons', {
   id: uuid('id').defaultRandom().primaryKey().notNull(),
