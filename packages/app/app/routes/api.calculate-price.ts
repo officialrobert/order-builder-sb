@@ -29,6 +29,7 @@ export async function action({ request }: Route.ActionArgs) {
     return new Response(
       JSON.stringify({
         monthlyCost: monthlyCost.toFixed(2),
+        subtotal: totalAmount.toFixed(2),
         totalAmount: totalAmount.toFixed(2),
         tax: '0.00',
         currency: 'USD',

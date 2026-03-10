@@ -81,6 +81,7 @@ function OrderBuilder({
   const [loadingPrice, setLoadingPrice] = useState(false);
   const [calculatedCosts, setCalculatedCosts] = useState({
     monthlyCost: '0.00',
+    subtotal: '0.00',
     totalAmount: '0.00',
     tax: '0.00',
   });
@@ -90,6 +91,7 @@ function OrderBuilder({
     if (!selectedPlan) {
       setCalculatedCosts({
         monthlyCost: '0.00',
+        subtotal: '0.00',
         totalAmount: '0.00',
         tax: '0.00',
       });
@@ -205,7 +207,6 @@ function OrderBuilder({
   const cardHeader = (
     <div className="p-4 border-b">
       <h2 className="text-2xl font-bold text-gray-800">Order Builder</h2>
-      <p className="text-gray-500">Consuming Data from Home Loader</p>
     </div>
   );
 
@@ -422,11 +423,23 @@ function OrderBuilder({
                     ${totalAddOnsPrice.toFixed(2)}
                   </span>
                 </div>
+                <div className="flex justify-between text-blue-800 pt-2 border-t border-blue-200">
+                  <span>Subtotal:</span>
+                  <span className="font-semibold">
+                    $
+                    {Number(calculatedCosts.subtotal).toLocaleString(
+                      undefined,
+                      {
+                        minimumFractionDigits: 2,
+                      },
+                    )}
+                  </span>
+                </div>
                 <div className="flex justify-between text-blue-800">
                   <span>Tax (Estimated):</span>
                   <span className="font-semibold">${calculatedCosts.tax}</span>
                 </div>
-                <div className="flex justify-between text-blue-800 pt-2 border-t border-blue-200">
+                <div className="flex justify-between text-blue-800">
                   <span>Effective Monthly:</span>
                   <span className="font-bold">
                     ${calculatedCosts.monthlyCost}
