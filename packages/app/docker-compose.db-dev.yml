@@ -1,0 +1,25 @@
+services:
+  postgres:
+    container_name: order_builder_postgres
+    image: postgres:15-alpine
+    ports:
+      - "${POSTGRES_PORT:-5432}:5432"
+    environment:
+      - POSTGRES_USER=${POSTGRES_USER:-order_builder_user_postgres}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD:-order_builder_password_postgres}
+      - POSTGRES_DB=${POSTGRES_DB:-order_builder}
+      - POSTGRES_HOST_AUTH_METHOD=trust
+      - POSTGRES_INITDB_ARGS=--auth-host=scram-sha-256
+    volumes:
+      - ./data/postgres:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-order_builder_user_postgres} -d ${POSTGRES_DB:-order_builder}"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    networks:
+      - order-builder-network
+
+networks:
+  order-builder-network:
+    name: order-builder-network
